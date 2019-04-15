@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -25,10 +26,21 @@ namespace ConsoleApp
                 app.UseDeveloperExceptionPage();
             }
 
+            // middleware 1
+            app.Use(async (context, next) => {
+                Debug.WriteLine($"Logica del delegado 1");
+                await next();
+                Debug.WriteLine($"Mas Logica del delegado 1");
+            });
+
+            // middleware 2
             app.Run(async (context) =>
             {
+                Debug.WriteLine($"Logica del delegado 2");
                 await context.Response.WriteAsync("Hello World!");
+                Debug.WriteLine($"Mas logica del delegado 2");
             });
         }
+
     }
 }
